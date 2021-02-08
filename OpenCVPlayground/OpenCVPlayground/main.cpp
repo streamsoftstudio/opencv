@@ -26,7 +26,7 @@ int main(int argc, const char * argv[])
     
     Mat src;
     
-    src = imread(argv[1], IMREAD_UNCHANGED);
+    src = imread(argv[1], IMREAD_COLOR);
 
     if(! src.data )
     {
@@ -43,7 +43,7 @@ int main(int argc, const char * argv[])
     
     
     Mat mask(src.size(),CV_8UC1);
-    circle(mask, cv::Point(mask.cols/2, mask.rows/2), 120, cv::Scalar(255, 0, 0), -1, 8, 0);
+    circle(mask, cv::Point(mask.cols/2, mask.rows/2+120), 200, cv::Scalar(255, 0, 0), -1, 8, 0);
     Mat image(src.size(),CV_8UC3,Scalar(255,255,255));
     src.copyTo(image,mask);
     
@@ -82,16 +82,16 @@ int main(int argc, const char * argv[])
     waitKey(0);
     
     std::vector<cv::Vec3f> redCircles, blueCircles, greenCircles;
-    HoughCircles(red_hue_image, redCircles, HOUGH_GRADIENT, 1, red_hue_image.rows/8, 100, 50, 0, 0);
-    HoughCircles(blue_hue_range, blueCircles, HOUGH_GRADIENT, 1, blue_hue_range.rows/8, 100, 50, 0, 0);
-    HoughCircles(green_hue_range, greenCircles, HOUGH_GRADIENT, 1, green_hue_range.rows/8, 100, 50, 0, 0);
+    HoughCircles(red_hue_image, redCircles, HOUGH_GRADIENT, 1, red_hue_image.rows/8, 200, 20, 10, 60);
+    HoughCircles(blue_hue_range, blueCircles, HOUGH_GRADIENT, 1, blue_hue_range.rows/8, 200, 20, 10, 60);
+    HoughCircles(green_hue_range, greenCircles, HOUGH_GRADIENT, 1, green_hue_range.rows/8, 200, 20, 10, 60);
     
     int r = drawCircle(redCircles, src, Scalar(0, 255, 255));
     int g = drawCircle(blueCircles, src, Scalar(255, 0, 255));
     int b = drawCircle(greenCircles, src, Scalar(255, 255, 0));
     
     cout << "Final image red: " << r << " green: " << g << " blue: " << b << std::endl ;
-    imshow( "Display window", blue_hue_range );
+    imshow( "Display window", src );
     
     waitKey(0);
 }
